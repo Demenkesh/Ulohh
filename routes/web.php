@@ -1,5 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Session;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,7 +18,7 @@
 
 /*------------------Template Controller------------*/
 
-Route::post('/pay', 'PaymentController@redirectToGateway')->name('pay'); 
+Route::post('/pay', 'PaymentController@redirectToGateway')->name('pay');
 
 Route::get('/', 'ClientController@homePage');
 Route::get('/login', 'TemplateController@login');
@@ -39,7 +44,7 @@ Route::post('/edit-basic-info', 'TemplateController@editedProcessBasicInfo');
 Route::get('/login', 'TemplateController@login');
 Route::post('/process-login', 'TemplateController@processLogin');
 
-Route::get('/logout', function(){
+Route::get('/logout', function () {
     Session::flush();
     return redirect('/')->with(Auth::logout());
 
@@ -51,10 +56,10 @@ Route::get('/logout', function(){
 
 /*------------------Client Controller------------*/
 // Route::group(['middleware' => ['authenticate']], function () {
-    Route::get('/my-dashboard', 'ClientController@myDashboard');
-    Route::get('/new-project', 'ClientController@newProject');
-    Route::post('/new-project', 'ClientController@storeProject');
-    Route::get('/profile/edit/{id}', 'ClientController@editProfile');
+Route::get('/my-dashboard', 'ClientController@myDashboard');
+Route::get('/new-project', 'ClientController@newProject');
+Route::post('/new-project', 'ClientController@storeProject');
+Route::get('/profile/edit/{id}', 'ClientController@editProfile');
 // });
 
 Route::group(['prefix' => 'products'], function () {
@@ -70,13 +75,11 @@ Route::group(['prefix' => 'products'], function () {
     Route::get('/cart/remove-product', 'ClientController@removeProduct');
     Route::get('/cart/register-product', 'ClientController@registerProduct');
     Route::post('/search/search-products', 'ClientController@searchProduct');
-    
 });
 
-Route::get('admin/logout', function(){
+Route::get('admin/logout', function () {
     Session::flush();
     return redirect('/admin/login')->with(Auth::logout());
-
 });
 Route::post('/admin/login', 'AdminController@login')->name('login');
 Route::get('/admin/login', 'AdminController@login');
@@ -117,7 +120,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::post('/store-sub-category', 'AdminController@storeSubCategory');
     Route::post('/store-products', 'AdminController@storeProducts');
 
-    
+
 
     Route::post('/edit-category', 'UserProfileController@show');
 
@@ -140,8 +143,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/transactions/{i}', 'AdminController@transactionProducts');
     Route::get('/transactions/{i}', 'AdminController@transactionProducts');
     Route::get('/product/delivered/{i}', 'AdminController@productDelivered');
-
-    
 });
 Route::group(['prefix' => 'professionals'], function () {
     Route::get('bath/{i}', 'ClientController@getProfessionals');
@@ -177,3 +178,28 @@ Route::get('ideabook', 'ClientController@showIdeaBook');
 
 
 
+Route::get('/seed-database', function () {
+    // Run individual seeders
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\UsersTableSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\BasicInfoTableSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\ProfServicesProvidedTableSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\BusinessDetailsTableSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\CompanyTypeSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\CategoriesSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\SubCategoriesSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\ProductsSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\ServicesSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\StatesSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\ServiceCategorySeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\BlogSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\ShopByDeptTransactionsSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\ShopByDeptContactInfoSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\ServicesSubCategorySeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\GetAQuoteSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\ProjectsSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\ProjectPicsSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\RatingsSeeder::class]);
+    Artisan::call('db:seed', ['--class' => \Database\Seeders\ContactProfessionalSeeder::class]);
+
+    return 'Database seeded successfully!';
+});

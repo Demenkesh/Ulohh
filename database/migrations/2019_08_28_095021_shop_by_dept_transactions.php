@@ -21,7 +21,7 @@ class ShopByDeptTransactions extends Migration
             $table->string('product_name', 100)->nullable()->default('text');
             $table->bigInteger('quantity')->nullable()->default(12);
             $table->bigInteger('price')->nullable()->default(12);
-            $table->string('delivered', 2)->nullable()->default('text');
+            $table->string('delivered', 2)->nullable()->default('');
             $table->timestamps();
         });
     }

@@ -175,7 +175,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Unicodeveloper\Paystack\PaystackServiceProvider::class,
-        willvincent\Rateable\RateableServiceProvider::class,
+        // willvincent\Rateable\RateableServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class
     ],
 

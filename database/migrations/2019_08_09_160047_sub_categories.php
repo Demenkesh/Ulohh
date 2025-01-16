@@ -17,6 +17,7 @@ class SubCategories extends Migration
             $table->increments('id');
             $table->bigInteger('cat_id')->nullable()->default(12);
             $table->string('name', 200)->nullable()->default('text');
+            $table->unsignedBigInteger('sub_cat_id')->nullable();
             $table->timestamps();
         });
     }

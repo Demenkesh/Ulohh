@@ -25,6 +25,7 @@ class Productss extends Migration
             $table->string('size', 100)->nullable()->default('text');
             $table->string('model', 100)->nullable()->default('text');
             $table->string('img_path', 100)->nullable()->default('text');
+            $table->string('thumbnail_path')->nullable();
             $table->timestamps();
         });
     }
